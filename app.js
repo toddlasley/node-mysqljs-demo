@@ -15,9 +15,18 @@ connection.connect(function(err){
     console.log('connected to ' + connection.threadId);
 });
 
-connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
+var sql = 'SELECT * from test_db.foo where foo_id = ?;';
+var value = 1;
+
+connection.query({
+  sql: sql,
+  values: [value]
+}, function (error, results, fields) {
   if (error) throw error;
-  console.log('The solution is: ', results[0].solution);
+
+  for(var i = 0; i < results.length; i++){
+    console.log('foo_id: ' + results[i].foo_id + '. foo_name: ' + results[i].foo_name);
+  }
 });
 
 connection.end();
